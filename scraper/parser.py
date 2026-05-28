@@ -4,6 +4,7 @@ HTML content parser module
    and extract story information.
 """
 
+from html import unescape
 from bs4 import BeautifulSoup
 
 def parse_html(html: str) -> list:
@@ -19,7 +20,8 @@ def parse_html(html: str) -> list:
     data = []
 
     for t in soup.select(".titleline a"):
-        title = t.text
+        #title = t.text
+        title = unescape(t.text) # clearner output without HTML entities
         link = t.get("href", "")
 
         data.append({

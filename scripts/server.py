@@ -9,7 +9,7 @@ import os
 import http.server
 import socketserver
 
-PORT = 8000
+PORT = 8001 # 8000 is being used for the api server
 
 # Change to data directory to serve HTML files
 os.chdir(os.path.join(os.path.dirname(__file__), '..', 'data'))

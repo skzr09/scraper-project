@@ -8,7 +8,9 @@ Summary of project structure
 project/
 │
 ├── bin/
-├── data/               # empty by default (need to download data content)
+├── api/
+│   └── app.py
+├── data/               # empty by default (download data content)
 ├── scraper/            # main module
 │   └── fetcher.py
 │       parser.py
@@ -72,6 +74,21 @@ Optionally use the script `server.py`
 $ python server.py
 ```
 
+## API Setup
+Setup of [FastAPI](https://fastapi.tiangolo.com/) to connect to backend.
+
+### Install and run
+
+```bash
+# install
+$ pip install fastapi uvicorn
+
+# start server (from project root)
+uvicorn api.app:app --reload --port 8000
+
+# open
+http://localhost:8000/docs
+```
 
 # Development Plan+Logic
 
@@ -80,12 +97,20 @@ $ python server.py
 Need to setup basic environment for testing of scrapping. This can be done fully 'online' mode but we will likely ran into issues with website 'rate limits'. Thus options include:
 
 1. Have 'offline' mode (page is read from a stored local file) -> issue: no HTTP layer (no realistic)
-2. Have 'live local' mode (page is served locally using localhost:8000) -> better for overall testing.
+2. Have 'live local' mode (page is served locally using localhost:8001) -> better for overall testing.
+**8000 is being used for FastAPI server
 
 ### 2. Scrapper
 
 1. Setup the basic scrapper
 2. Make sure the content is moduralized from the begginning
     * contains `fetcher.py`, `parser.py` and `scraper` files
+3. Added `beautifulsoup4`, `requests`
 
-###
+### 3. API Backend (FastAPI)
+
+1. Connect client via API to backend
+    - Client → FastAPI → Scraper → HTML → Parsed → JSON ✅
+- Added: `fastapi`, `uvicorn`
+
+
