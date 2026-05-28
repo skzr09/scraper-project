@@ -21,13 +21,20 @@ project/
 
 ## Install
 
-Clone the repository:
+Clone the repository
 ```bash
 git clone <repository-url>
 cd scraper-project
 ```
 
-Install dependencies using the requirements file:
+Setup virtual environment (optionally use `virtualenv`)
+```bash
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate       # Windows
+```
+
+Install dependencies using the requirements file
 ```bash
 pip install -r requirements.txt
 ```
@@ -66,7 +73,7 @@ $ python server.py
 ```
 
 
-# Logic
+# Development Plan+Logic
 
 ### 1. Setup basic environemnt
 
