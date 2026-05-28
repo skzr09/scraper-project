@@ -1,12 +1,13 @@
+"""
+Run live localhost server
+   Simple HTTP Server for serving HTML files
+   Usage:
+       python server.py
+"""
 
-# server.py
-#   Simple HTTP Server for serving HTML files
-#   Usage:
-#       python server.py
-
+import os
 import http.server
 import socketserver
-import os
 
 PORT = 8000
 

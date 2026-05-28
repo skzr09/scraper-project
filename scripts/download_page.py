@@ -1,8 +1,9 @@
-
-# download_page.py
-#   Downloads a web page from a given URL and saves it as an HTML file.
-#   Usage:
-#       python download_page.py
+"""
+Download Page
+   Downloads a web page from a given URL and saves it as an HTML file.
+   Usage:
+       python download_page.py
+"""
 
 import requests
 
