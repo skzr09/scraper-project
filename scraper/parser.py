@@ -4,7 +4,7 @@ HTML content parser module
    and extract story information.
 """
 
-from html import unescape
+# import select
 from bs4 import BeautifulSoup
 
 def parse_html(html: str, rules: dict) -> list:
@@ -25,9 +25,18 @@ def parse_html(html: str, rules: dict) -> list:
         entry = {}
 
         for field, cfg in rules["fields"].items():
-            element = it.select_one(cfg["selector"])
+            # element = it.select_one(cfg["selector"])
+
+            if cfg["selector"] == "":
+                element = it
+            else:
+                element = it.select_one(cfg["selector"])
+
+            # updated to deal with cases
+            #   URL is on the root <a> element / No need to re-select
+
             entry[field] = element.text.strip() if element else ""
-            
+
             if not element:
                 if cfg.get("optional"):
                     entry[field] = None
@@ -44,16 +53,3 @@ def parse_html(html: str, rules: dict) -> list:
         results.append(entry)
 
     return results
-
-"""
-
-    for t in soup.select(".titleline a"):
-        #title = t.text
-        title = unescape(t.text) # clearner output without HTML entities
-        link = t.get("href", "")
-
-        data.append({
-            "title": title,
-            "url": link
-        })
-"""
