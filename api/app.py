@@ -8,15 +8,23 @@ import os
 from fastapi import HTTPException
 from fastapi import FastAPI
 
+# for scraping and parsing
 from scraper.logger import log
 from scraper.loader import load_keywords
 from scraper.scraper import scrape
 from scraper.configs import get_config_from_url, load_configs
 
+# for database interaction
 from db.crud import save_articles
+from db.db import SessionLocal
+from db.models import Article
 
+#------------------------------------------
+# Settings
+#------------------------------------------
 
-N_LIMIT = 10 # Default limit for number of results to return from the scraper
+# Pagination: Default limit for number of results to return from the scraper
+N_LIMIT = 20
 
 # Create a FastAPI application instance
 app = FastAPI()
@@ -35,26 +43,34 @@ def debug_config(url: str):
     return {"config": config}
 
 #------------------------------------------
-from db.db import SessionLocal
-from db.models import Article
-
+# Define a GET endpoint to retrieve all articles from the database, with optional filtering by source URL
 @app.get("/get-data")
-def get_data(source: str = ""):
+def get_data(source: str = "",
+             keyword: str = "",
+             limit: int = N_LIMIT):
     """
     Get all articles from the database and return them as a list of dictionaries.\n
     Args:\n
-        source (str): Optional filter to return only articles from a specific source URL.\n 
+        source (str): Optional filter to return only articles from a specific source URL.\n
+        keyword (str): Optional filter to return only articles containing a specific keyword.\n
     Returns:\n
         list: A list of dictionaries containing 'title', 'url', and 'source' keys for each article.\n
     """
     db = SessionLocal()
+    query = db.query(Article)
 
     # apply 'source' filter if provided, otherwise return all articles
     if source:
-        results = db.query(Article).filter(Article.source.contains(source)).all()
-    else:
-        results = db.query(Article).all()
+        query = query.filter(Article.source.contains(source))
 
+    # apply 'keyword' filter to title if provided
+    if keyword:
+        query = query.filter(Article.title.contains(keyword))
+
+    # sort by created_at desc
+    query = query.order_by(Article.created_at.desc())
+
+    results = query.limit(limit).all()
     db.close()
 
     return [

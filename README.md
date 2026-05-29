@@ -200,3 +200,9 @@ Notes:
 * The DB is simple and only local for now.
 * The get-data has very basic filtering by 'source' field.
 ```
+
+### 7. Enrichment and Filtering
+
+* Add filterting and enrichment features
+* Add tags and other fields in DB
+* TODO :)
