@@ -1,0 +1,45 @@
+{
+  "name": "hackernews",
+  "base_urls": [
+    "https://news.ycombinator.com",
+    "https://ycombinator.com",
+    "newshacker.html",
+    "hackernews.html"
+  ],
+  "item_selector": ".athing",
+  "fields": {
+    "title": {
+      "selector": ".titleline a",
+      "type": "text"
+    },
+    "url": {
+      "selector": ".titleline a",
+      "type": "attribute",
+      "name": "href"
+    },
+    "rank": {
+      "selector": ".rank",
+      "type": "text"
+    },
+    "site": {
+      "selector": ".sitestr",
+      "type": "text",
+      "optional": true
+    },
+    "score": {
+      "selector": ".score",
+      "type": "text",
+      "optional": true
+    },
+    "author": {
+      "selector": ".hnuser",
+      "type": "text",
+      "optional": true
+    },
+    "age": {
+      "selector": ".age",
+      "type": "text",
+      "optional": true
+    }
+  }
+}
