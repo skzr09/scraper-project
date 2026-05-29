@@ -59,12 +59,22 @@ Verify installation:
 python main.py
 ```
 
-## Create database
+## Database
+
+### Create database
 To instantiate the database (local) used to store data, use init script. Output in `\db\`
 
 ```bash
 @ python -m scripts.init_db
 ```
+
+### Delete database
+
+```bash
+$ del .\db\scraper.db
+```
+
+
 
 ## Testing
 
