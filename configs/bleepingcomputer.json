@@ -1,0 +1,39 @@
+{
+  "name": "bleepingcomputer",
+  "base_urls": [
+    "bleepingcomputer.com",
+    "bleepingcomputer.html"
+  ],
+  "item_selector": "#bc-home-news-main-wrap > li",
+  "fields": {
+    "title": {
+      "selector": "h4 a",
+      "type": "text"
+    },
+    "url": {
+      "selector": "h4 a",
+      "type": "attribute",
+      "name": "href"
+    },
+    "summary": {
+      "selector": ".bc_latest_news_text > p",
+      "type": "text",
+      "optional": true
+    },
+    "author": {
+      "selector": ".bc_news_author a",
+      "type": "text",
+      "optional": true
+    },
+    "date": {
+      "selector": ".bc_news_date",
+      "type": "text",
+      "optional": true
+    },
+    "time": {
+      "selector": ".bc_news_time",
+      "type": "text",
+      "optional": true
+    }
+  }
+}

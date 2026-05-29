@@ -1,0 +1,29 @@
+{
+  "name": "thehackernews",
+  "base_urls": [
+    "https://thehackernews.com",
+    "thehackernews.html"
+  ],
+  "item_selector": ".body-post",
+  "fields": {
+    "title": {
+      "selector": ".home-title",
+      "type": "text"
+    },
+    "url": {
+      "selector": "a.story-link",
+      "type": "attribute",
+      "name": "href"
+    },
+    "summary": {
+      "selector": ".home-desc",
+      "type": "text",
+      "optional": true
+    },
+    "date": {
+      "selector": ".item-label",
+      "type": "text",
+      "optional": true
+    }
+  }
+}

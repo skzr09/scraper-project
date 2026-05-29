@@ -3,8 +3,8 @@
   "base_urls": [
     "https://news.ycombinator.com",
     "https://ycombinator.com",
-    "newshacker.html",
-    "hackernews.html"
+    "news.ycombinator.html",
+    "ycombinator.html"
   ],
   "item_selector": ".athing",
   "fields": {
