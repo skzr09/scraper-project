@@ -8,19 +8,22 @@ Summary of project structure
 project/
 │
 ├── bin/
-├── api/
+├── api/                    # FastAPI
 │   └── app.py
-├── configs/            # source parsing configs
-│   └── hackernews.py
+├── configs/                # parsing rules
+│   └── hackernews.json
+│   └── bleepingcomputer.py
 │       ...
-├── data/               # empty by default (download data content)
-├── scraper/            # main module
+├── data/                   # data samples (download data content)
+├── scraper/                # main module
 │   └── fetcher.py
-│       parser.py
-│       scraper.py
+│   └── parser.py
+│   └── scraper.py
+|       ...
 ├── scripts/
-├── models/
-├── main.py             # entry point
+├── test/                   # validation
+├── main.py                 # entry point
+├── README.md
 ├── requirements.txt
 ```
 
@@ -77,7 +80,7 @@ Optionally use the script `server.py`
 $ python server.py
 ```
 
-## API Setup
+### API Setup
 Setup of [FastAPI](https://fastapi.tiangolo.com/) to connect to backend.
 
 ### Install and run
@@ -93,7 +96,48 @@ uvicorn api.app:app --reload --port 8000
 http://localhost:8000/docs
 ```
 
+## Adding sources
+
+### Select the source
+
+1. Select URL = "https://websiteXYZ.com"
+2. (for offline testing) Go to the page and 'SAVE AS' (.html)
+3. Create a config file and add in `configs/` (use template)
+
+### Create the config file
+Create the configuration files with the parsing rules. Within new config file make sure that the url have both options *.html (for offline testing) and *.com. See example. Finish the configuration of the new file with the selected fields for carving data from website.
+```json
+# Example of config for 'websitexyz'
+{
+  "name": "websiteXYZ",
+  "base_urls": [
+    "websiteXYZ.com",
+    "websiteXYZ.html"
+  ],
+  "item_selector": "...",
+  "fields": {
+    ...
+  }
+}
+```
+
+### Testing
+For testing that the config data is correctly being loaded use the testing scripts (see `test\`).
+```bash
+$ python -m test.test_config_selection
+```
+
 # Development Plan+Logic
+
+## Features
+
+* Core scraping engine
+* Supports live online and live offline (local) URLs
+* Supports multiple sources
+* Uses generic parser json configuration files for parsing rules
+
+
+## Development
 
 ### 1. Setup basic environemnt
 
@@ -118,11 +162,13 @@ Need to setup basic environment for testing of scrapping. This can be done fully
 ### 4. Expanded config-based sources
 
 * Defined a rule-based generic parser to handle different formats - each with specific parsing rules.
->> Added `configs.py` to the scraper\ to manage the config mapping
->> Added auto-selection of configs based on the URL selection
+* Added `configs.py` to the scraper\ to manage the config mapping
+* Added auto-selection of configs based on the URL selection
 * In `configs`, added support for:
-    * hackernews
-    * todo
-    * todo
+    * new.ycombinaytor hackernews
+    * thehackernews
+    * bleepingcomputer
 
+```python
+# Current features:
 
