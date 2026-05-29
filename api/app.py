@@ -8,8 +8,9 @@ import os
 from fastapi import HTTPException
 from fastapi import FastAPI
 
-from scraper.scraper import scrape
+from scraper.logger import log
 from scraper.loader import load_keywords
+from scraper.scraper import scrape
 from scraper.configs import get_config_from_url
 
 N_LIMIT = 10 # Default limit for number of results to return from the scraper
@@ -21,6 +22,12 @@ app = FastAPI()
 @app.get("/")
 def root():
     return {"message": "Scraper API running"}
+
+# Define a GET endpoint to debug configuration selection based on URL
+@app.get("/debug-config")
+def debug_config(url: str):
+    config = get_config_from_url(url)
+    return {"config": config}
 
 
 # Define a GET endpoint that accepts a URL parameter and runs the scraper
@@ -71,6 +78,8 @@ def run_scraper(url: str,
             "config_auto": config_auto,
             "url": url
         }
+    log.info(f"URL received: {url}")
+    log.info(f"Configuration status: {myconfigs}")
 
     if myconfigs["error"]:
         raise HTTPException(status_code=400, detail=myconfigs["error"])

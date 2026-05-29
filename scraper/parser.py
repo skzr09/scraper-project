@@ -7,6 +7,9 @@ HTML content parser module
 # import select
 from bs4 import BeautifulSoup
 
+from scraper.logger import log
+
+
 def parse_html(html: str, rules: dict) -> list:
     """
     Parse HTML and extract story titles and URLs.
@@ -21,6 +24,8 @@ def parse_html(html: str, rules: dict) -> list:
     items = soup.select(rules["item_selector"])
     results = []
 
+    log.info(f"Parsing HTML with {len(items)} items found using selector: {rules['item_selector']}")
+
     for it in items:
         entry = {}
 
@@ -31,6 +36,8 @@ def parse_html(html: str, rules: dict) -> list:
                 element = it
             else:
                 element = it.select_one(cfg["selector"])
+
+            log.debug(f"Processing field: {field}, Selector: {cfg['selector']}, Element found: {bool(element)}")
 
             # updated to deal with cases
             #   URL is on the root <a> element / No need to re-select

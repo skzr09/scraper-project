@@ -8,6 +8,8 @@ import os
 
 from pathlib import Path
 
+from scraper.logger import log
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --REMOVED-- no info loaded directly from json files
@@ -35,18 +37,18 @@ def get_config_from_url(url: str):
     for cfg in config_files:
         cfg_path = os.path.join(path_configs, cfg) # get full path to the config file
 
-        print(f"Checking: {cfg_path}")
+        log.info(f"Checking: {cfg_path}")
 
         with open(cfg_path, "r", encoding="utf-8") as f:
             cfg_data = json.load(f)
-            print(f"Base URL(s): {cfg_data.get('base_urls')}")
+            log.info(f"Base URL(s): {cfg_data.get('base_urls')}")
 
             if "base_urls" in cfg_data:
                 for base in cfg_data["base_urls"]:
                     if base in url:
-                        print(f"✅ Match found: {cfg_path}")
+                        log.info(f"Match found: {cfg_path}")
                         return cfg_path
-    print("❌ No matching config found for URL:", url)
+    log.warning(f"No matching config found for URL: {url}")
     return None
 
 def load_configs(path: str):
