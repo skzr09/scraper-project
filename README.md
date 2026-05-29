@@ -10,6 +10,10 @@ project/
 ├── bin/
 ├── api/                    # FastAPI
 │   └── app.py
+├── db/                     # database
+│   └── db.py
+│   └── models.py
+|
 ├── configs/                # parsing rules
 │   └── hackernews.json
 │   └── bleepingcomputer.py
@@ -21,6 +25,9 @@ project/
 │   └── scraper.py
 |       ...
 ├── scripts/
+│   └── init_db.py          # initialize database
+│   └── server.py           # initialize server localhost
+|
 ├── test/                   # validation
 ├── main.py                 # entry point
 ├── README.md
@@ -50,6 +57,13 @@ pip install -r requirements.txt
 Verify installation:
 ```bash
 python main.py
+```
+
+## Create database
+To instantiate the database (local) used to store data, use init script. Output in `\db\`
+
+```bash
+@ python -m scripts.init_db
 ```
 
 ## Testing
@@ -164,11 +178,25 @@ Need to setup basic environment for testing of scrapping. This can be done fully
 * Defined a rule-based generic parser to handle different formats - each with specific parsing rules.
 * Added `configs.py` to the scraper\ to manage the config mapping
 * Added auto-selection of configs based on the URL selection
-* In `configs`, added support for:
-    * new.ycombinaytor hackernews
-    * thehackernews
-    * bleepingcomputer
+* In `configs`, added support for (examples):
+    * *new.ycombinaytor hackernews*
+    * *thehackernews*
+    * *bleepingcomputer*
 
-```python
-# Current features:
+### 5. Logging
 
+* Added basic support for `logging` accross the module.
+
+### 6. Storage
+
+* Added support for DB (save results, query stored data and avoid duplications)
+* Setup `sqlalchemy` for strage (SQL abstraction rather than direct SQL communication).
+* Added `db/` folder with the models and DB interface.
+* Added option in main `app` to get data from the existing database (basic filter).
+
+```
+Notes:
+* Used 'sqlalchemy' to avoid exposure to raw DB commands.
+* The DB is simple and only local for now.
+* The get-data has very basic filtering by 'source' field.
+```

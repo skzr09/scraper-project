@@ -11,25 +11,64 @@ from fastapi import FastAPI
 from scraper.logger import log
 from scraper.loader import load_keywords
 from scraper.scraper import scrape
-from scraper.configs import get_config_from_url
+from scraper.configs import get_config_from_url, load_configs
+
+from db.crud import save_articles
+
 
 N_LIMIT = 10 # Default limit for number of results to return from the scraper
 
 # Create a FastAPI application instance
 app = FastAPI()
 
+#------------------------------------------
 # Define a GET endpoint at the root URL that returns a status message
 @app.get("/")
 def root():
     return {"message": "Scraper API running"}
 
+#------------------------------------------
 # Define a GET endpoint to debug configuration selection based on URL
 @app.get("/debug-config")
 def debug_config(url: str):
     config = get_config_from_url(url)
     return {"config": config}
 
+#------------------------------------------
+from db.db import SessionLocal
+from db.models import Article
 
+@app.get("/get-data")
+def get_data(source: str = ""):
+    """
+    Get all articles from the database and return them as a list of dictionaries.\n
+    Args:\n
+        source (str): Optional filter to return only articles from a specific source URL.\n 
+    Returns:\n
+        list: A list of dictionaries containing 'title', 'url', and 'source' keys for each article.\n
+    """
+    db = SessionLocal()
+
+    # apply 'source' filter if provided, otherwise return all articles
+    if source:
+        results = db.query(Article).filter(Article.source.contains(source)).all()
+    else:
+        results = db.query(Article).all()
+
+    db.close()
+
+    return [
+        {
+            "title": r.title,
+            "url": r.url,
+            "source": r.source,         
+            "created_at": r.created_at,
+            "updated_at": r.updated_at
+        }
+        for r in results
+    ]
+
+#------------------------------------------
 # Define a GET endpoint that accepts a URL parameter and runs the scraper
 @app.get("/scrape")
 def run_scraper(url: str,
@@ -68,6 +107,7 @@ def run_scraper(url: str,
             "error": "Config not found",
             "config": config_path,
             "config_auto": config_auto,
+            "config_name": "Unknown",
             "url": url
         }
     else:
@@ -76,8 +116,10 @@ def run_scraper(url: str,
             "error": None,
             "config": config_path,
             "config_auto": config_auto,
+            "config_name": load_configs(config_path).get("name"),
             "url": url
         }
+
     log.info(f"URL received: {url}")
     log.info(f"Configuration status: {myconfigs}")
 
@@ -99,6 +141,14 @@ def run_scraper(url: str,
 
         # filter results based on keywords
         data = [d for d in data if any(k in d["title"] for k in keywords)]
+
+    # TODO: temporary, the format of fields in data is not consistent across configs,
+    # we need to standardize it and make it more flexible to handle different field names and structures
+    # For now, we will just return the raw data and let the client handle it
+
+    # Save the scraped articles to the database
+    save_articles(data, source=myconfigs["config_name"])  
+
 
     return {"message": "Scraper API test finished running",
             "target_url": url,

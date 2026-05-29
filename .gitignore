@@ -3,6 +3,18 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# folders
+data/
+
+# Virtual environments
+.venv/
+
+# Database
+*.db
+
+# Logs
+logs/
+
 # C extensions
 *.so
 
