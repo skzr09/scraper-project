@@ -1,3 +1,4 @@
+""" Test the config selection logic for the scraper. """
 
 # test_config.py
 from scraper.configs import get_config_from_url
