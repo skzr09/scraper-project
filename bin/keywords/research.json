@@ -1,5 +1,6 @@
 {
   "name": "Research",
+  "tag": "Research",
   "description": "Research specific keywords for scraping relevant content.",
   "keywords": [
     "research",
@@ -29,8 +30,6 @@
     "results",
     "conclusion",
     "hypothesis",
-    "dataset",
-    "framework",
     "model",
     "simulation"
   ]

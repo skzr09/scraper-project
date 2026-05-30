@@ -1,5 +1,6 @@
 {
   "name": "Automotive",
+  "tag": "Automotive",
   "description": "Automotive specific keywords for scraping relevant content.",
   "keywords": [
     "automotive",
