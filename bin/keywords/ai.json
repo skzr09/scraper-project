@@ -1,6 +1,6 @@
 {
-  "name": "Artificial Intelligence",
-  "tag": "AI",
+  "name": "ai",
+  "tag": "ai",
   "description": "AI-specific keywords for scraping relevant content.",
   "keywords": [
     "artificial intelligence",
