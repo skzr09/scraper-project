@@ -1,0 +1,98 @@
+# Concept
+
+## Summary and Features
+
+This project implements a modular scraping and aggregation pipeline designed to:
+
+* Collect content from multiple sources
+* Store results in a database
+* Expose functionality via a REST API (FastAPI)
+* Supports live online and live offline (local) URLs
+* Uses generic parser json configuration files for parsing rules
+
+
+## Architecture
+
+```
+Client → FastAPI → Scraper → Enrichment → DB → API
+```
+
+###  Core Features
+
+- Modular scraping engine
+- Supports online + local sources
+- Config-driven parsing (multi-source)
+- FastAPI backend
+- SQLAlchemy + SQLite storage
+- Tagging, scoring, enrichment
+- Logging and error handling
+- Demo orchestration with subprocesses
+
+## Design choices
+- Live local server used for realistic scraping tests
+- JSON configs per source (selectors, tags, parsing rules)
+- Pydantic config validation
+- Clean modular structure (fetch → parse → process → store)
+
+
+## Development
+
+### 1. Setup basic environemnt
+
+Need to setup basic environment for testing of scrapping. This can be done fully 'online' mode but we will likely ran into issues with website 'rate limits'. Thus options include:
+
+1. Have 'offline' mode (page is read from a stored local file) -> issue: no HTTP layer (no realistic)
+2. Have 'live local' mode (page is served locally using localhost:8001)
+    * *better for overall testing - 8001 is being used for FastAPI server*
+
+### 2. Scrapper
+
+* Setup the basic scrapper
+* Make sure the content is moduralized from the begginning
+    * contains `fetcher.py`, `parser.py` and `scraper` files
+* Added `beautifulsoup4`, `requests`
+
+### 3. API Backend (FastAPI)
+
+* Connect API to backend (Client → FastAPI → Scraper → HTML → Parsed → JSON ✅)
+* Added: `fastapi`, `uvicorn`
+
+### 4. Expanded rule-based sources
+
+* Defined a rule-based generic parser to handle different formats - each with specific parsing rules.
+* Added `sources.py` to the scraper\ to manage the source rule mapping
+* Added auto-selection of rules based on the URL selection
+* In `sources`, added support for (examples):
+    * *new.ycombinaytor hackernews*
+    * *thehackernews*
+    * *bleepingcomputer*
+
+### 5. Logging
+
+* Added basic support for `logging` accross the module.
+
+### 6. Storage
+
+* Added support for DB (save results, query stored data and avoid duplications)
+* Setup `sqlalchemy` for strage (SQL abstraction rather than direct SQL communication).
+* Added `db/` folder with the models and DB interface.
+* Added option in main `app` to get data from the existing database (basic filter).
+
+```
+Notes:
+* Used 'sqlalchemy' to avoid exposure to raw DB commands.
+* The DB is simple and only local for now.
+* The get-data has very basic filtering by 'source' field.
+```
+
+### 7. Enrichment and Filtering
+
+* Add filterting and enrichment features
+* Add tags and other fields in DB
+* Basic features, but they work :)
+
+### 8. Demo
+
+* Improved the test\ and scripts\
+* Setup of a `demo.py` for demonstrations purposes.
+* Added pictures and explanation into `\bin\demo\DEMO/md`

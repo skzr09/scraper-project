@@ -5,7 +5,7 @@ HTML content fetcher module
 """
 
 import requests
-
+from requests.exceptions import HTTPError
 from scraper.logger import log
 
 def fetch(url: str) -> str:
@@ -16,15 +16,34 @@ def fetch(url: str) -> str:
     Returns:
         str: The content retrieved from the URL or local file.
     """
+    res = None
 
-    if url.startswith("http://") or url.startswith("https://"):
-        res = requests.get(url) #, timeout=20)
-        res.raise_for_status() # Raise an exception for HTTP errors
-        log.info("Fetched URL: %s with status code %s", url, res.status_code)
-        return res.text
-    else:
-        # treat as local file
-        with open(url, "r", encoding="utf-8") as f:
-            content = f.read()
-            log.info("Fetched local file: %s", url)
-            return content
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    try:
+
+        if url.startswith("http://") or url.startswith("https://"):
+            res = requests.get(url, headers=headers, timeout=20) #timeout=20)
+
+            if res.status_code == 403:
+                print("❌ Access blocked (403) for %s", url)
+                log.warning("❌ Access blocked (403) for %s", url)
+                return "Error: Access blocked (403)"
+
+            res.raise_for_status() # Raise an exception for HTTP errors
+            log.info("Fetched URL: %s with status code %s", url, res.status_code)
+            return res.text
+
+        else:
+            # treat as local file
+            with open(url, "r", encoding="utf-8") as f:
+                content = f.read()
+                log.info("Fetched local file: %s", url)
+                return content
+
+    except Exception as e:
+        print("[Err ] Failed to fetch %s: \n[MSG] %s", url, e)
+        log.error("Unexpected error while fetching %s: %s", url, e)
+        return ""

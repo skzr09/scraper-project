@@ -24,6 +24,6 @@ server:
 
 database:
   type: sqlite
-  path: data/scraper1.db
+  path: data/scraper.db
 
 # TODO: add collection filters

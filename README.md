@@ -1,5 +1,5 @@
 # scraper-project
-Scraper project
+Project used to implement content scraper from the web. Can be scaled for as many sources as needed since each source has a dedicated parser. The information scraped is enriched with defined rules and stored in database. FastAPI is used to provide endpoint interface to the `scraper` function and `get-data` to access the information in the database.
 
 ## Structure
 Summary of project structure
@@ -8,12 +8,17 @@ Summary of project structure
 project/
 │
 ├── bin/
-├── api/                    # FastAPI
+|   └── demo/DEMO.md        # Details on the demo
+|
+├── config/                 # Environment app configuations
+│   └── configs.yaml
+|
+├── api/                    # FastAPI interface
 │   └── app.py
-├── db/                     # database
+├── db/                     # database models
 │   └── db.py
 │   └── models.py
-|
+|   ...
 ├── configs/                # parsing rules
 │   └── hackernews.json
 │   └── bleepingcomputer.py
