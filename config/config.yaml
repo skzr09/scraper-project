@@ -1,0 +1,29 @@
+app:
+  name: scraper-project
+  environment: dev
+
+paths:
+  base: .
+  logs: logs/
+  data: data/
+  test: tests/
+  rules: configs/
+  scripts: scripts/
+  keywords: bin/keywords/
+
+api:
+  name: "App (FastAPI)"
+  host: 127.0.0.1
+  port: 8000
+  reload: true
+
+server:
+  name: "HTML Server (uvicorn)"
+  host: 127.0.0.1
+  port: 8001
+
+database:
+  type: sqlite
+  path: data/scraper1.db
+
+# TODO: add collection filters
