@@ -28,7 +28,7 @@ Included in this project there is a simple demo which allows to try using the `s
 
 The application uses a centralized configuration file. Validation through `pydantic`.
 ```
-\configs\configs.yaml
+\config\config.yaml
 ```
 
 ## ▶️ Usage
@@ -76,31 +76,44 @@ The demo sets up and initializes the following components (see table below).
 | Database | Stores enriched results locally |
 
 
+### Get data
+
+Sample data is not provided since -*I do not own it*-, as such, to test the application, better download some data and test it in 'offline mode'.
+
+For the demo, go to [BleepingComputer](https://www.bleepingcomputer.com/), right click on the page and "Save as" (CTRL + S). Make sure to save the data inside a folder, suggestion.
+
+#### Example
+```
+root\
+| data
+|   |__mydata\bleepingComputerpage.html
+|   |__mydata\bleepingComputerpage_files\
+```
+
+#### Check Content
+Once running, check in the browser localhost:port, you should be able to see the contents.
+
+```python
+[ Local Server content ] http://localhost:8001
+```
+
 ### Using Application
-Once running, check the link (ports might vary based on `config.yaml`).
+Once running, check the link (ports might vary based on `config.yaml`). Inside local application `APP` the following endpoints should be available.
 
 ```python
 [ Local Application (FastAPI) ] http://localhost:8000/docs
 ```
 
-Inside local application `APP` the following endpoints should be available.
-
-#### /run-scraper
-
-
 #### /get-data
 
-Provides interface to query the database. Check the parameters available (use 'Execute').
+Provides interface to query the database. Check the parameters available (use 'Execute'). Will return entries from the database which match. Make sure to run scraper first in order to populate the database.
 
-![fastapi_getdata](02_fastapi_getdata.png)
+![fastapi_getdata](..\pics\02_fastapi_getdata.png)
 
 
 #### /run-scraper
 
 Scraper application. Pass as input the path url for the targeted `http` url.
 
-![fastapi_getdata](03_fastapi_runscraper.png)
-
-
-
+![fastapi_getdata](..\pics\03_fastapi_runscraper.png)
 
