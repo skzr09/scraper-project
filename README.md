@@ -1,6 +1,7 @@
 # scraper-project
 Project used to implement content scraper from the web. Can be scaled for as many sources as needed since each source has a dedicated parser. The information scraped is enriched with defined rules and stored in database. FastAPI is used to provide endpoint interface to the `scraper` function and `get-data` to access the information in the database.
 
+
 ## Structure
 Summary of project structure
 
@@ -9,10 +10,8 @@ project/
 │
 ├── bin/
 |   └── demo/DEMO.md        # Details on the demo
-|
 ├── config/                 # Environment app configuations
 │   └── configs.yaml
-|
 ├── api/                    # FastAPI interface
 │   └── app.py
 ├── db/                     # database models
@@ -62,6 +61,13 @@ pip install -r requirements.txt
 Verify installation:
 ```bash
 python main.py
+```
+
+## Quick Demo
+Check `bin\demo\DEMO.md`. Need to setup environment before demo (Includes setup of database, server and api interface).
+
+```bash
+$ python demo.py
 ```
 
 ## Database
@@ -156,68 +162,6 @@ For testing that the config data is correctly being loaded use the testing scrip
 $ python -m test.test_config_selection
 ```
 
-# Development Plan+Logic
+## Development Plan+Logic
 
-## Features
-
-* Core scraping engine
-* Supports live online and live offline (local) URLs
-* Supports multiple sources
-* Uses generic parser json configuration files for parsing rules
-
-
-## Development
-
-### 1. Setup basic environemnt
-
-Need to setup basic environment for testing of scrapping. This can be done fully 'online' mode but we will likely ran into issues with website 'rate limits'. Thus options include:
-
-1. Have 'offline' mode (page is read from a stored local file) -> issue: no HTTP layer (no realistic)
-2. Have 'live local' mode (page is served locally using localhost:8001)
-    * *better for overall testing - 8001 is being used for FastAPI server*
-
-### 2. Scrapper
-
-* Setup the basic scrapper
-* Make sure the content is moduralized from the begginning
-    * contains `fetcher.py`, `parser.py` and `scraper` files
-* Added `beautifulsoup4`, `requests`
-
-### 3. API Backend (FastAPI)
-
-* Connect API to backend (Client → FastAPI → Scraper → HTML → Parsed → JSON ✅)
-* Added: `fastapi`, `uvicorn`
-
-### 4. Expanded config-based sources
-
-* Defined a rule-based generic parser to handle different formats - each with specific parsing rules.
-* Added `configs.py` to the scraper\ to manage the config mapping
-* Added auto-selection of configs based on the URL selection
-* In `configs`, added support for (examples):
-    * *new.ycombinaytor hackernews*
-    * *thehackernews*
-    * *bleepingcomputer*
-
-### 5. Logging
-
-* Added basic support for `logging` accross the module.
-
-### 6. Storage
-
-* Added support for DB (save results, query stored data and avoid duplications)
-* Setup `sqlalchemy` for strage (SQL abstraction rather than direct SQL communication).
-* Added `db/` folder with the models and DB interface.
-* Added option in main `app` to get data from the existing database (basic filter).
-
-```
-Notes:
-* Used 'sqlalchemy' to avoid exposure to raw DB commands.
-* The DB is simple and only local for now.
-* The get-data has very basic filtering by 'source' field.
-```
-
-### 7. Enrichment and Filtering
-
-* Add filterting and enrichment features
-* Add tags and other fields in DB
-* TODO :)
+Check `\bin\Concept.md`
