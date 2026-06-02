@@ -1,5 +1,5 @@
 """
-Logging
+Logger
     It configures the logging level and provides a logger instance that can 
     be used throughout the project to log messages, errors, and other info.
 """
@@ -7,13 +7,9 @@ Logging
 # scraper/logger.py
 import logging
 
-
-#logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
-
 logging.basicConfig(
     filename="app.log",
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
 

@@ -17,11 +17,11 @@ def load_keywords_library(keywords_folder: str):
     """
     keywords_dict = {}
     keywords_path = Path(keywords_folder)
-    
+
     if not keywords_path.exists():
-        log.warning(f"Keywords folder not found: {keywords_folder}")
+        log.warning("Keywords folder not found: %s", keywords_folder)
         return keywords_dict
-    
+
     for file in keywords_path.glob("*.json"):
         try:
             with open(file, "r", encoding="utf-8") as f:
@@ -30,7 +30,7 @@ def load_keywords_library(keywords_folder: str):
                     tag = data["tag"]
                     keywords_dict[tag] = data["keywords"]
         except (json.JSONDecodeError, IOError) as e:
-            log.error(f"Error loading keywords from {file}: {e}")
+            log.error("Error loading keywords from %s: %s", file, e)
 
     return keywords_dict
 
@@ -52,3 +52,9 @@ def keyword_match(entry: str, keywords: list[str]) -> list[str]:
     return matched
 
 
+# TODO: consider removing (only being used in test module)
+def load_keywords(path: str):
+    """ Load keywords from a JSON file at the given path. """
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+        return data["keywords"], data["name"]

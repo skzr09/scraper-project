@@ -6,7 +6,6 @@ HTML content parser module
 
 # import select
 from bs4 import BeautifulSoup
-
 from scraper.logger import log
 
 
@@ -24,7 +23,8 @@ def parse_html(html: str, rules: dict) -> list:
     items = soup.select(rules["item_selector"])
     results = []
 
-    log.info(f"Parsing HTML with {len(items)} items found using selector: {rules['item_selector']}")
+    log.info("Parsing HTML with %d items found using selector: %s",
+             len(items), rules["item_selector"])
 
     for it in items:
         entry = {}
@@ -37,7 +37,8 @@ def parse_html(html: str, rules: dict) -> list:
             else:
                 element = it.select_one(cfg["selector"])
 
-            log.debug(f"Processing field: {field}, Selector: {cfg['selector']}, Element found: {bool(element)}")
+            log.debug("Processing field: %s, Selector: %s, Element found: %s",
+                      field, cfg["selector"], bool(element))
 
             # updated to deal with cases
             #   URL is on the root <a> element / No need to re-select
@@ -47,8 +48,6 @@ def parse_html(html: str, rules: dict) -> list:
             if not element:
                 if cfg.get("optional"):
                     entry[field] = None
-                    continue
-                else:
                     continue
 
             if cfg["type"] == "text":
