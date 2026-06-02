@@ -8,7 +8,7 @@ Database Models (tables)
 #from turtle import pu
 #from typing import Text
 
-from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
+from sqlalchemy import Column, Integer, String, Text, DateTime
 from datetime import datetime
 from db.db import Base
 
@@ -30,7 +30,7 @@ class Article(Base):
     summary = Column(String, nullable=True)
 
     status = Column(String, default="new", nullable=True)
-    # Status:example ["new", "parsed", "enriched", "stored", "error"]
+    # Status: example ["new", "parsed", "enriched", "stored", "error"]
 
     # Enrichment
     tags = Column(Text, nullable=True) # json

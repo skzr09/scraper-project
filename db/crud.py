@@ -3,7 +3,6 @@ CRUD Database Operations
 """
 from db.db import SessionLocal
 from db.models import Article
-
 from scraper.logger import log
 
 def save_articles(data):
@@ -22,7 +21,7 @@ def save_articles(data):
         exists = db.query(Article).filter_by(url_hash=item["url_hash"]).first()
 
         if not exists:
-           log.debug(f"Adding to table (hash): {item['url_hash']}")
+           log.debug(f"Adding to table (title): {item['title']}\nURL: {item['url']}\nSource: {item['source']}\nAuthor: {item['author']}\nPublished Date: {item['date']}\nTags: {item['tags']}\nTag Scores: {item['tag_scores']}")
 
            db.add(Article(
                 title       = item["title"],
